@@ -1,4 +1,4 @@
-import json, ast,os 
+import json
 def _send(socket, data):
     try:
         serialized = json.dumps(data)
@@ -29,5 +29,25 @@ def _recv(socket):
         raise Exception('Data received was not in JSON format')
     return deserialized
 
-def _search(mac, list):
-    return [user for user in list if ast.literal_eval(user).get("mac_address") == mac["mac_address"]]
+def search(data, list):
+    info = json.loads(data)
+    return [user for user in list if user._mac_address == info["_mac_address"]]
+
+
+def status(stored_pc,status):
+    if status == "Online": 
+        return type(stored_pc).connection_status.fset(stored_pc,"Online")
+    return type(stored_pc).connection_status.fset(stored_pc,"Offline")
+
+
+def write_log(info,arq):
+    pass
+
+def read_log(info,arq):
+    pass
+
+
+def print_item(online):
+    [print("------------------\nClient ID:%d"%item._id, item, end = "\n\n") for item in online if item._connection_status == "Online"]
+    
+    

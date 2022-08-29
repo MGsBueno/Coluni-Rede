@@ -1,0 +1,14 @@
+----------  Beginning of the Iteration ----------
+Iteration nº 1, Current Online Users: 
+
+
+Computer: default_user
+Sector: default
+Platform: Windows 10, version: 10
+Architecture: AMD64
+Processor: Intel64 Family 6 Model 142 Stepping 12, GenuineIntel
+Hostname LAB-BOLSISTAS
+IP: 192.168.0.151, mac: 80:fa:5b:a7:1d:dd
+Online at: 3/6/2022 , 11:58:14
+Status: Online
+----------  End of the Iteration ----------

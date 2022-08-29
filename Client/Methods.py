@@ -1,4 +1,4 @@
-import json
+import json, time
 def _send(socket, data):
     try:
         serialized = json.dumps(data)
@@ -28,3 +28,25 @@ def _recv(socket):
     except (TypeError, ValueError):
         raise Exception('Data received was not in JSON format')
     return deserialized
+
+def catch_error(err):
+    print(err)
+    instant = time.localtime()
+    error = ("Error: {}, {}"
+    .format(err,err))
+
+    msg_err = ("{}/{}/{} - {}:{}:{} - " 
+    .format(
+        instant[2],instant[1],instant[0],   #date
+        instant[3],instant[4],instant[5])   #time
+        )
+        
+
+    f = open("logs\log.txt","a")
+    print("saving log")
+    f.write(str(msg_err)+" Server Unavailable "+"\n")        
+    f.close()
+
+       
+    
+    

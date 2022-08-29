@@ -1,0 +1,3 @@
+
+HOST = 'ADDRESS'
+PORT = 7575

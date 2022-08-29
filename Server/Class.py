@@ -1,4 +1,4 @@
-import socket, platform, re, uuid, time
+import socket, time, json
 from Methods import _recv, _send
 
 class Server(object):
@@ -81,19 +81,20 @@ class Date():
         self.initial_second = time.localtime([5])
 
 class PC_Info (Date):
-    def __init__(self,id):
-        self._platform = platform.system()
-        self._platform_release=platform.release()
-        self._platform_version = platform.version()
-        self._architecture = platform.machine()
-        self._hostname = socket.gethostname()
-        self._ip_address = socket.gethostbyname(socket.gethostname())
-        self._mac_address =':'.join(re.findall('..', '%012x' % uuid.getnode()))
-        self._processor = platform.processor()
-        self._name = None
-        self._sector = None
+    def __init__(self,data,id,label):
+        info = json.loads(data)
+        self._platform = info["_platform"]
+        self._platform_release=info["_platform_release"]
+        self._platform_version = info["_platform_release"]
+        self._architecture = info["_architecture"]
+        self._hostname = info["_hostname"]
+        self._ip_address = info["_ip_address"]
+        self._mac_address =info["_mac_address"]
+        self._processor = info["_processor"]
+        self._name = label["name"]
+        self._sector = label["sector"]
         self._id = id
-        self._connection_status = "Offline"
+        self._connection_status = "Online"
         super().__init__()
     
     def __str__(self):
@@ -106,24 +107,6 @@ class PC_Info (Date):
             )
         )
             
-            
-    def __str__(self):
-            #Inicial data
-            return("Online at: {}/{}/{} , {}:{}:{}" 
-                .format(
-                    self.day,self.month, self.year, 
-                    self.hour, self.minute, self.second
-                )
-            )
-
-    @property
-    def id(self):
-        return(self._id)
-
-    @id.setter
-    def id(self,id):
-        self._id = id
-
     @property
     def connection_status(self): #getting method of status
         return self._connection_status
@@ -132,13 +115,15 @@ class PC_Info (Date):
     #setter method status
     @connection_status.setter
     def connection_status(self, status):
-        self._status = status
-        
+        self._connection_status = status
+
+    
             
-    def update_stats(self):
-        self.year = time.localtime([0])
-        self.month = time.localtime([1])
-        self.day = time.localtime([2])
-        self.hour = time.localtime([3])
-        self.minute = time.localtime([4])
-        self.initial_second = time.localtime([5])
+    def update_time_stats(self):
+        time_stamp = time.localtime()
+        self.year = time_stamp[0]  
+        self.month = time_stamp[1]
+        self.day = time_stamp[2]
+        self.hour = time_stamp[3]
+        self.minute = time_stamp[4]
+        self.second = time_stamp[5]

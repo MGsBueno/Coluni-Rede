@@ -1,35 +1,8 @@
-import json, socket, platform, re, uuid, time
+import json, socket, platform, re, uuid
 
 from Methods import _recv, _send
 
-class Date():   
-    def __init__(self):
-            time_stamp = time.localtime()
-            self.year = time_stamp[0]  
-            self.month = time_stamp[1]
-            self.day = time_stamp[2]
-            self.hour = time_stamp[3]
-            self.minute = time_stamp[4]
-            self.second = time_stamp[5]
-                   
-    def __str__(self):
-            #Inicial data
-            return("Online at: {}/{}/{} , {}:{}:{}" 
-                .format(
-                    self.day,self.month, self.year, 
-                    self.hour, self.minute, self.second
-                )
-            )
-            
-    def update_stats(self):
-        self.year = time.localtime([0])
-        self.month = time.localtime([1])
-        self.day = time.localtime([2])
-        self.hour = time.localtime([3])
-        self.minute = time.localtime([4])
-        self.initial_second = time.localtime([5])
-
-class PC_Info (Date):
+class PC_Info ():
     def __init__(self):
         self._platform = platform.system()
         self._platform_release=platform.release()
@@ -39,31 +12,15 @@ class PC_Info (Date):
         self._ip_address = socket.gethostbyname(socket.gethostname())
         self._mac_address =':'.join(re.findall('..', '%012x' % uuid.getnode()))
         self._processor = platform.processor()
-        self.name = None
-        self._sector = None
-        super().__init__()
     
     def __str__(self):
-        date = super().__str__()
-        return ("\n\nComputer: {}\nSector: {}\nPlatform: {} {}, version: {}\nArchitecture: {}\nProcessor: {}\nHostname {}\nIP: {}, mac: {}\n{}\nStatus: {}" 
+        return ("\n\nComputer: {}\nSector: {}\nPlatform: {} {}, version: {}\nArchitecture: {}\nProcessor: {}\nHostname {}\nIP: {}, mac: {}\n" 
             .format
             (
                 self.name, self._sector, self._platform, self._platform_release, self._platform_version, self._architecture,
-                self._processor, self._hostname, self._ip_address, self._mac_address, date, self._connection_status
-            )
+                self._processor, self._hostname, self._ip_address, self._mac_address)
         )
-
    
-   
-    
-    def Compare_time(self):
-        time_stamp = time.localtime()
-        if(self.year<time_stamp[0] | self.month<time_stamp[1] | self.day<time_stamp[2]
-        | (self.hour*60< + self.min <  time_stamp[3]*60 + time_stamp[4])
-        ):
-            self.connection_status("Offline")
-        else:self.connection_status("Online")
-    
 class Client(object):
     """
     A JSON socket client used to communicate with a JSON socket server. All the
@@ -87,9 +44,13 @@ class Client(object):
         self.close()
 
     def connect(self, host, port):
-        self.socket = socket.socket()
-        self.socket.connect((host, port))
-        return self
+        try:
+            self.socket = socket.socket()
+            self.socket.connect((host, port))
+            return self
+        except InterruptedError: return None
+
+
 
     def send(self, data):
         if not self.socket:
