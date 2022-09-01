@@ -1,13 +1,6 @@
 from ast import Constant
 import os, constant, shutil
-
-
-def create_directory():
-    try: 
-        os.mkdir(constant.APP)
-        print("Directory created")
-    except FileExistsError:
-        print("directoryalready exists!\n")
+from Methods import create_directory
 
 
 def copy_files():
@@ -21,13 +14,9 @@ def copy_files():
                     source = current_directory+file_name
                     destination = destination_directory+file_name
                     shutil.copy(source,destination)
-                    print("copied" + file_name)
-            
-                    
-            
-            
+                    print("copied" + file_name)  
             except:print("not copied "+ file_name + ", archive alredy exist!")
 
 
-create_directory()
+create_directory(constant.APP)
 copy_files()

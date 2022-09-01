@@ -1,4 +1,5 @@
-import json, time
+import json, time, os, time, constant
+
 def _send(socket, data):
     try:
         serialized = json.dumps(data)
@@ -42,11 +43,34 @@ def catch_error(err):
         )
         
 
-    f = open("logs\log.txt","a")
+    f = open(constant.LOGS+"\\log.txt","a")
     print("saving log")
     f.write(str(msg_err)+" Server Unavailable "+"\n")        
     f.close()
 
-       
-    
-    
+def create_directory(address):
+    try: 
+        os.mkdir(address)
+        print("Directory created")
+    except FileExistsError:
+        print("directory already exists!\n")
+
+def save_dns_address(date,hour, minute):
+    logs = constant.LOGS+"\\"+date+"\\"+str(hour)+"h-"+str(minute)+"min"
+    os.system(' cmd /c ipconfig /displaydns > %s.txt' %logs)
+
+def get_date():
+    time_stamp = time.localtime()
+    day = str(time_stamp.tm_mday)
+    month = str(time_stamp.tm_mon)
+    year= str(time_stamp.tm_year)
+    today=day+'-'+month+'-'+year
+    return today
+
+def get_hour():
+    time_stamp = time.localtime()
+    hour= str(time_stamp.tm_hour)
+    minute= str(time_stamp.tm_min)
+    hour_min = hour+"-"+minute
+    return hour_min
+
