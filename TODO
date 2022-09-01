@@ -1,3 +1,6 @@
-* Add a function to exec cmd "ipconfig /displaydns > dnsX.txt" on folder Logs.
+* Add a function to exec cmd "ipconfig /displaydns > dnsX.txt" on folder Logs. (Done)
 * Add functions to send logs to server and transmit to remote admin.
+	{-> SEND ALL FUNC
+	-> SEND BY DAY FUNC
+	 }ASSOCIATE TO MAC FOLDER/TABLE
 * another things!
